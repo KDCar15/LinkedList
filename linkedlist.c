@@ -1,78 +1,56 @@
 #include "linkedlist.h"
 
-int_node* int_create_node(int data, int_node* prev_node)
+int_ll* int_ll_create()
 {
-	int_node* node = (int_node*)malloc(sizeof(int_node));
+	int_ll* output = (int_ll*)malloc(sizeof(int_ll));
+	output->begin = NULL;
+	output->end = NULL;
+	output->size = 0;
+	return output;
+}
 
-	if(!node){
-		return NULL;
-	}
+int_node* int_ll_addnode_atend(int_ll* ll, int data)
+{
+	ll->size++;
+	if(ll->end)
+		ll->end = int_add_node_after(data, 0, 0, ll->end);
+	else
+		ll->begin = int_create_node(data, NULL);
+		ll->end = ll->begin;
+	return ll->end;
+}
 
-	node->data = data;
-	node->next = NULL;
-	if(prev_node)
-		prev_node->next = node;
+int_node* int_ll_addnode_atbegin(int_ll* ll, int data)
+{
+	ll->size++;
+	if(ll->begin)
+		ll->begin = int_add_node_before(data, 0, 0, ll->begin);
+	else
+		ll->begin = int_add_node_before(data, 0, 0, ll->begin);
+		ll->end = ll->begin;
+	return ll->begin;
+}
+
+int_node* int_ll_addnode_after(int_ll* ll, int data, int index)
+{
+	ll->size++;
+	int_node* node = int_add_node_after(data, index, 0, ll->begin);
+	if (index == ll->size)
+		ll->end = node;
 	return node;
 }
 
-int_node* int_add_node_after(int data, int index, int prev_index, int_node* cur_node){
-	if(prev_index == index){
-		int_node *temp = cur_node->next;
-		int_node *node = int_create_node(data, cur_node);
-		node->next = temp;
-		return node;
-	}
-	
-	if(cur_node->next == NULL)
-	       	return NULL;
-
-	prev_index++;
-	return int_add_node_after(data, index, prev_index, cur_node->next);
-}
-
-int_node* int_add_node_before(int data, int index, int prev_index, int_node* cur_node){
-	if(prev_index == index){
-		int_node* node = int_create_node(data, NULL);
-		node->next = cur_node;
-		return node;
-	}
-	
-	if(cur_node->next == NULL)
-	       	return NULL;
-
-	prev_index++;
-	return int_add_node_before(data, index, prev_index, cur_node->next);
-}
-
-int int_get_node(int index, int prev_index, int_node* cur_node){
-	if(prev_index == index)
-		return cur_node->data;
-
-	if(cur_node->next == NULL)
-	       	return 0;
-
-	prev_index++;
-	return int_get_node(index, prev_index, cur_node->next);
-}
-
-void int_free_node(int index, int prev_index, int_node* cur_node)
+int_node* int_ll_addnode_before(int_ll* ll, int data, int index)
 {
-	if(prev_index == index){	
-		free(cur_node);
-		return;
-	}
-
-	if(!cur_node->next)
-	       	return;
-	
-	if(prev_index + 1 == index){
-		int_node* temp = cur_node->next->next;
-		free(cur_node->next);
-		cur_node->next = temp;
-		return;
-	}
-
-	prev_index++;
-	int_free_node(index, prev_index, cur_node->next);	
+	ll->size++;
+	int_node* node = int_add_node_before(data, index, 0, ll->begin);
+	if (index == 0)
+		ll->begin = node;
+	return node;
 }
 
+void int_ll_freenode(int_ll* ll, int index)
+{
+	int_free_node(index, 0, ll->begin);
+	ll->size--;	
+}
