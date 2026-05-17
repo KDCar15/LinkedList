@@ -30,20 +30,22 @@ int_node* int_add_node_after(int data, int index, int prev_index, int_node* cur_
 	return int_add_node_after(data, index, prev_index, cur_node->next);
 }
 
-int_node* int_add_node_before(int data, int index, int prev_index, int_node* cur_node){
+int_node* int_add_node_before(int data, int index, int prev_index, int_node* prev_node, int_node* cur_node){
 	if(prev_index == index){
 		// To do: Implement a way for the node to know the node that goes before.
 		// 	  The current implementation breaks the linked list.
 		int_node* node = int_create_node(data, NULL);
 		node->next = cur_node;
+		if(prev_node)
+			prev_node->next = node;
 		return node;
 	}
 	
-	if(cur_node->next == NULL)
+	if(!cur_node->next)
 	       	return NULL;
 
 	prev_index++;
-	return int_add_node_before(data, index, prev_index, cur_node->next);
+	return int_add_node_before(data, index, prev_index, cur_node, cur_node->next);
 }
 
 int int_get_node(int index, int prev_index, int_node* cur_node){

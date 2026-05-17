@@ -15,8 +15,10 @@ int_node* int_ll_addnode_atend(int_ll* ll, int data)
 	if(ll->end)
 		ll->end = int_add_node_after(data, 0, 0, ll->end);
 	else
+	{
 		ll->begin = int_create_node(data, NULL);
 		ll->end = ll->begin;
+	}
 	return ll->end;
 }
 
@@ -24,10 +26,12 @@ int_node* int_ll_addnode_atbegin(int_ll* ll, int data)
 {
 	ll->size++;
 	if(ll->begin)
-		ll->begin = int_add_node_before(data, 0, 0, ll->begin);
+		ll->begin = int_add_node_before(data, 0, 0, NULL, ll->begin);
 	else
-		ll->begin = int_add_node_before(data, 0, 0, ll->begin);
+	{
+		ll->begin = int_add_node_before(data, 0, 0, NULL, ll->begin);
 		ll->end = ll->begin;
+	}
 	return ll->begin;
 }
 
@@ -43,10 +47,18 @@ int_node* int_ll_addnode_after(int_ll* ll, int data, int index)
 int_node* int_ll_addnode_before(int_ll* ll, int data, int index)
 {
 	ll->size++;
-	int_node* node = int_add_node_before(data, index, 0, ll->begin);
 	if (index == 0)
+	{
+		int_node* node = int_create_node(data, NULL);
+		if(!node) return NULL;
+		node->next = ll->begin;
 		ll->begin = node;
-	return node;
+
+		if(!ll->end) ll->end = node;
+
+		return node;
+	}
+	return int_add_node_before(data, index, 0, NULL, ll->begin);
 }
 
 void int_ll_freenode(int_ll* ll, int index)

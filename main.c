@@ -12,7 +12,7 @@ int main(){
 	printf("Mostrando todos los nodos\n");
 	for(int i = 0; i < linkedlist->size ; i++)
 	{
-		int num = int_get_node(i, 0, node1);
+		int num = int_get_node(i, 0, linkedlist->begin);
 		printf("%d ", num);
 	}
 	printf("\n\n");
@@ -21,7 +21,7 @@ int main(){
 	int_ll_freenode(linkedlist, 2);
 	for(int i = 0; i < linkedlist->size; i++)
 	{
-		int num = int_get_node(i, 0, node1);
+		int num = int_get_node(i, 0, linkedlist->begin);
 		printf("%d ", num);
 	}
 	printf("\n\n");
@@ -31,7 +31,7 @@ int main(){
 	
 	for(int i = 0; i < linkedlist->size; i++)
 	{
-		int num = int_get_node(i, 0, node1);
+		int num = int_get_node(i, 0, linkedlist->begin);
 		printf("%d ", num);
 	}
 	printf("\n\n");
@@ -40,7 +40,16 @@ int main(){
 	int_node* node7 = int_ll_addnode_before(linkedlist, 5, 2);
 	for(int i = 0; i < linkedlist->size; i++)
 	{
-		int num = int_get_node(i, 0, node7);
+		int num = int_get_node(i, 0, linkedlist->begin);
+		printf("%d ", num);
+	}
+	printf("\n\n");
+
+	printf("Agregando nodo al comienzo\n");
+	int_node* node8 = int_ll_addnode_atbegin(linkedlist, 7);
+	for(int i = 0; i < linkedlist->size; i++)
+	{
+		int num = int_get_node(i, 0, linkedlist->begin);
 		printf("%d ", num);
 	}
 	printf("\n\n");
